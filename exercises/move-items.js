@@ -2,7 +2,7 @@
  * SORTING NODES WITHIN A CONTAINER
  * Please, make sure to read the following files in the exercises-info folder before you start
  * * 01 SelectNodes.md
-*/
+ */
 
 /**
  * @task
@@ -12,8 +12,8 @@
  */
 
 // Your code goes here...
-
-
+const allItems = document.querySelectorAll('.item');
+// console.log('all items: ', allItems);
 
 /**
  * @task
@@ -23,8 +23,8 @@
  * */
 
 // Your code goes here
-
-
+const main = document.getElementById('main');
+// console.log('main: ', main);
 
 /**
  * @task
@@ -34,8 +34,8 @@
  */
 
 // Your code goes here
-
-
+const favs = document.getElementById('favs');
+// console.log('favs: ', favs);
 
 /**
  * @task
@@ -47,8 +47,34 @@
  */
 
 // Your code goes here
+const updateCollections = (id, direction) => {
+	const item = document.getElementById(id);
+	if (!item) return;
 
+	let newParent, newIcon;
+	if (direction === 'toFavs') {
+		newParent = document.getElementById('favs');
+		// console.log('New Parent favs:', newParent);
+		newIcon = 'fa-heart-crack';
+		// console.log('New Icon favs: ', newIcon);
+	} else if (direction === 'toMain') {
+		newParent = document.getElementById('main');
+		// console.log('New Parent main:', newParent);
+		newIcon = 'fa-heart-circle-plus';
+		// console.log('New Icon favs: ', newIcon);
+	} else {
+		return;
+	}
 
+	newParent.appendChild(item);
+	// console.log('NewParent: ', newParent);
+
+	const icon = item.querySelector('i');
+	if (icon) {
+		icon.classList.remove('fa-heart-crack', 'fa-heart-circle-plus');
+		icon.classList.add(newIcon);
+	}
+};
 
 /**
  * @task
@@ -65,5 +91,17 @@
  */
 
 // Your code goes here...
+allItems.forEach((item) => {
+	item.addEventListener('click', () => {
+		const parentId = item.parentElement.id;
+		// console.log(parentId);
 
+		const itemId = parseInt(item.id, 10);
+		// console.log(itemId);
 
+		const direction = parentId === 'main' ? 'toFavs' : 'toMain';
+		// console.log(direction);
+
+		updateCollections(itemId, direction);
+	});
+});
