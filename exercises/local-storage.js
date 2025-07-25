@@ -38,3 +38,20 @@
  */
 
 // Your code goes here...
+const cardsContainer = document.querySelector('.cardsContainer');
+console.log('cards container: ', cardsContainer);
+
+const applyFavsColor = (e) => {
+	const item = e.target;
+	console.log('item: ', item);
+
+	if (Array.from(item.classList).includes('item')) {
+		if (item.style.backgroundColor === 'orange') {
+			item.style.backgroundColor = 'red';
+		} else {
+			item.style.backgroundColor = 'orange';
+		}
+	}
+};
+
+applyFavsColor();

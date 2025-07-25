@@ -13,7 +13,7 @@
 
 // Your code goes here...
 const allItems = document.querySelectorAll('.item');
-console.log('All items: ', allItems);
+// console.log('All items: ', allItems);
 
 /**
  * @task
@@ -24,7 +24,7 @@ console.log('All items: ', allItems);
 
 // Your code goes here...
 const sortBtn = document.querySelectorAll('.sortBtn');
-console.log('Sort Btn: ', sortBtn);
+// console.log('Sort Btn: ', sortBtn);
 
 /**
  * @task
@@ -45,11 +45,16 @@ const sortData = (direction) => {
 
 	newArr.sort((a, b) => {
 		const idA = parseInt(a.id);
+		// console.log('idA: ', idA);
+
 		const idB = parseInt(b.id);
+		// console.log('idB: ', idB);
+
 		return direction === 'asc' ? idA - idB : idB - idA;
 	});
 
 	newArr.forEach((item) => container.appendChild(item));
+	console.log(newArr);
 };
 
 /**
@@ -65,5 +70,6 @@ sortBtn.forEach((btn) =>
 	btn.addEventListener('click', () => {
 		const direction = btn.dataset.sortdir;
 		sortData(direction);
+		// console.log('Direction 2:', direction);
 	})
 );
