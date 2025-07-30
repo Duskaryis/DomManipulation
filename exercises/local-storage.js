@@ -17,9 +17,9 @@
  * * If the item is NOT in favorites LS and has white background color
  * * * Changes the color of the box to red
  * * * Add the item's id to the local storage
- * * Else if the box is in favorites LS and has white red color
+ * * Else if the box is in favorites LS and has red color
  * * * Changes the color of the box to white
- * * * Add the item's id to the local storage
+ * * * Remove the item's id from the local storage
  * * Make all the items that are listed in the favorites LS save the red background color when the page is reloaded
  */
 
@@ -38,20 +38,64 @@
  */
 
 // Your code goes here...
-const cardsContainer = document.querySelector('.cardsContainer');
-console.log('cards container: ', cardsContainer);
+const container = document.querySelector('.cardsContainer');
 
-const applyFavsColor = (e) => {
-	const item = e.target;
-	console.log('item: ', item);
+if (!localStorage.getItem('Favorites')) {
+	localStorage.setItem('Favorites', JSON.stringify([]));
+}
 
-	if (Array.from(item.classList).includes('item')) {
-		if (item.style.backgroundColor === 'orange') {
-			item.style.backgroundColor = 'red';
-		} else {
-			item.style.backgroundColor = 'orange';
+function findIndex(arr, val) {
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i] === val) {
+			return i;
 		}
 	}
-};
+	return -1;
+}
 
-applyFavsColor();
+function applyFavorites() {
+	let favorites = JSON.parse(localStorage.getItem('Favorites'));
+
+	if (!Array.isArray(favorites)) {
+		favorites = [];
+	}
+
+	const cards = container.querySelectorAll('.card');
+
+	cards.forEach((card) => {
+		if (findIndex(favorites, card.id) !== -1) {
+			card.style.backgroundColor = 'red';
+		} else {
+			card.style.backgroundColor = 'white';
+		}
+	});
+}
+
+applyFavorites();
+
+container.addEventListener('click', (e) => {
+	const card = e.target.closest('.card');
+	if (!card || !container.contains(card)) return;
+
+	let favorites = JSON.parse(localStorage.getItem('Favorites'));
+
+	// Ensure favorites is an array before using push/splice
+	if (!Array.isArray(favorites)) {
+		favorites = [];
+	}
+
+	const id = card.id;
+	if (!id) return;
+
+	const index = findIndex(favorites, id);
+
+	if (index === -1) {
+		favorites.push(id);
+		card.style.backgroundColor = 'red';
+	} else {
+		favorites.splice(index, 1);
+		card.style.backgroundColor = 'white';
+	}
+
+	localStorage.setItem('Favorites', JSON.stringify(favorites));
+});
